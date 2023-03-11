@@ -3,21 +3,20 @@
 int render_map(int x_ball, int y_ball, int y_player_1, int y_player_2);
 
 int main() {
+    // while(1)
+    // move_ball(int x_ball, int y_ball);
     render_map(1, 12, 12, 12);
     return 0;
 }
 
 int render_map(int x_ball, int y_ball, int y_player_1, int y_player_2) {
-    const int HEIGHT = 24;
-    const int WIDTH = 79;
+    const int HEIGHT = 25;
+    const int WIDTH = 80;
 
-    for (int y = 0; y < (HEIGHT + 1); y++) {
-        for (int x = 0; x < (WIDTH + 1); x++) {
+    for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
             // отрисовка границ верх и низ
-            if ((y == 0 || y == HEIGHT) && x != WIDTH) 
-                printf("_");
-            else if ((y == 0 || (y == HEIGHT && y != y_player_2)) && x == WIDTH) 
-                printf("_\n");
+            if ((y == 0 || y == HEIGHT - 1) && x != WIDTH - 1) printf("_");
 
             // отрисовка мяча
             else if (x == x_ball && y == y_ball)
@@ -26,17 +25,16 @@ int render_map(int x_ball, int y_ball, int y_player_1, int y_player_2) {
             // отрисовка первого игрока
             else if (x == 0 && (y == y_player_1 - 1 || y == y_player_1 || y == y_player_1 + 1))
                 printf("|");
-            
-             // отрисовка второго игрока
-            else if (x == WIDTH && (y == y_player_2 - 1 || y == y_player_2 || y == y_player_2 + 1))
-                printf("|\n");
+
+            // отрисовка второго игрока
+            else if (x == WIDTH - 1 && (y == y_player_2 - 1 || y == y_player_2 || y == y_player_2 + 1))
+                printf("|");
 
             // отрисовка пустого места
-            else if ((y != 0 && y != WIDTH) && x == WIDTH)
-                printf(" \n");                
             else
                 printf(" ");
         }
+        printf("\n");
     }
     return 0;
 }
