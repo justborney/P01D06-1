@@ -14,19 +14,20 @@ int main() {
     int y_player_2 = 12;
     int direction = 1;
     char user_input;
-    char last_char_checker;
+    // char last_char_checker;
 
-    while (1) {
+    while (user_input != 'q') {
         x_ball = move_ball(x_ball, direction);
         if (x_ball == 1 || x_ball == WIDTH - 2) direction *= -1;
 
-        int user_input_checker = scanf("%c%c", &user_input, &last_char_checker);
-        if (user_input_checker == 2 || last_char_checker != '\n') {
+        user_input = getchar();
+        if (user_input != '\n') {
             if (user_input == 'a' || user_input == 'z') {
+                printf("%c\n", user_input);
                 y_player_1 = move_paddle(y_player_1, user_input);
             } 
             if (user_input == 'k' || user_input == 'm') {
-                printf("HI\n");
+                printf("%c\n", user_input);
                 y_player_2 = move_paddle(y_player_2, user_input);
             }
             render_map(x_ball, y_ball, y_player_1, y_player_2);
@@ -75,10 +76,13 @@ int move_ball(int x_ball, int direction) {
 }
 
 int move_paddle(int y_player, char user_input) {
-    if (user_input == 'a' || user_input == 'k') {
+        printf("UP_before+=%d \n", y_player);
+    if ((user_input == 'a' || user_input == 'k') && y_player > 2) {
         y_player -= 1;
-    } else if (user_input == 'z' || user_input == 'm') {
+        printf("UP_after+=%d \n", y_player);
+    } else if ((user_input == 'z' || user_input == 'm') && y_player < 22) {
         y_player += 1;
     }
     return y_player;
 }
+
