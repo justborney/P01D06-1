@@ -10,6 +10,7 @@ int move_paddle(int y_player, char user_input);
 int is_ball_at_paddle_1(int x_ball, int y_ball, int y_player);
 int is_ball_at_paddle_2(int x_ball, int y_ball, int y_player_2);
 int is_border(int y_ball);
+int loss_check(int x_ball);
 
 int main() {
     int x_ball = 77;
@@ -18,36 +19,54 @@ int main() {
     int y_player_2 = 12;
     int x_direction = 1;
     int y_direction = 1;
-    char user_input;
+    int score_player_1 = 0;
+    int score_player_2 = 0;
 
     printf("Press space button to start. Press q to exit.\n");
-    while (user_input != 'q') {
+    while (1) {
+        char user_input;
         user_input = getchar();
-        if (user_input != '\n' && (user_input == 'a' || user_input == 'z' || 
-                                   user_input == 'k' || user_input == 'm' || 
-                                   user_input == ' ')) {
+        if (user_input != '\n' && (user_input == 'a' || user_input == 'z' || user_input == 'k' ||
+                                   user_input == 'm' || user_input == ' ' || user_input == 'q')) {
             if (is_ball_at_paddle_1(x_ball, y_ball, y_player_1) == 1) {
                 x_direction *= -1;
             } else if (is_ball_at_paddle_2(x_ball, y_ball, y_player_2) == 1) {
                 x_direction *= -1;
             }
-
             if (is_border(y_ball)) {
                 y_direction *= -1;
-            }  
-
-            // printf("at paddle x=%d y=%d y_p=%d\n",x_ball, y_ball, y_player_1);
+            }
             x_ball = x_move_ball(x_ball, x_direction);
             y_ball = y_move_ball(y_ball, y_direction);
+            if (loss_check(x_ball)) {
+                if (x_ball > 79) {
+                    score_player_1++;
+                    x_ball = 78;
+                    y_ball = 12;
+                    x_direction = 1;
+                } else if (x_ball < 0) {
+                    score_player_2++;
+                    x_ball = 1;
+                    y_ball = 12;
+                    x_direction = -1;
+                    y_direction = -1;
+                }
+            }
+            if (score_player_1 > 1 || score_player_2 > 1 || user_input == 'q') {
+                printf("%c", user_input);
+                break;
+            }
             if (user_input == 'a' || user_input == 'z') {
                 y_player_1 = move_paddle(y_player_1, user_input);
             }
             if (user_input == 'k' || user_input == 'm') {
                 y_player_2 = move_paddle(y_player_2, user_input);
             }
-            printf("X_direction = %d Y_direction = %d x_ball = %d y_ball = %d\n", x_direction, y_direction, x_ball, y_ball);
-
+            printf("X_direction = %d Y_direction = %d x_ball = %d y_ball = %d\n", x_direction, y_direction,
+                   x_ball, y_ball);
             render_map(x_ball, y_ball, y_player_1, y_player_2);
+            printf("First player %d  ---  Second player %d\n", score_player_1, score_player_2);
+            printf("Last user input: %c\n", user_input);
         }
     }
     return 0;
@@ -110,24 +129,35 @@ int move_paddle(int y_player, char user_input) {
 }
 
 int is_ball_at_paddle_1(int x_ball, int y_ball, int y_player_1) {
-    int result;
-    if (x_ball == 1 && (y_player_1 == y_ball || y_player_1 + 1== y_ball || y_player_1 -1 == y_ball)) {
+    int result = 0;
+    if (x_ball == 1 && (y_player_1 == y_ball || y_player_1 + 1 == y_ball || y_player_1 - 1 == y_ball)) {
         result = 1;
     }
     return result;
 }
 
 int is_ball_at_paddle_2(int x_ball, int y_ball, int y_player_2) {
-    int result;
-    if ((x_ball == WIDTH - 2) && (y_player_2 == y_ball || y_player_2 + 1== y_ball || y_player_2 -1 == y_ball)) {
+    int result = 0;
+    if ((x_ball == WIDTH - 2) &&
+        (y_player_2 == y_ball || y_player_2 + 1 == y_ball || y_player_2 - 1 == y_ball)) {
         result = 1;
     }
     return result;
 }
 
 int is_border(int y_ball) {
-    int result;
+    int result = 0;
     if (y_ball == 1 || y_ball == HEIGHT - 2) {
+        result = 1;
+    } else {
+        result = 0;
+    }
+    return result;
+}
+
+int loss_check(int x_ball) {
+    int result = 0;
+    if (x_ball == -1 || x_ball == 80) {
         result = 1;
     } else {
         result = 0;
