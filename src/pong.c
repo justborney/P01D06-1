@@ -62,11 +62,8 @@ int main() {
             if (user_input == 'k' || user_input == 'm') {
                 y_player_2 = move_paddle(y_player_2, user_input);
             }
-            printf("X_direction = %d Y_direction = %d x_ball = %d y_ball = %d\n", x_direction, y_direction,
-                   x_ball, y_ball);
             render_map(x_ball, y_ball, y_player_1, y_player_2);
             printf("First player %d  ---  Second player %d\n", score_player_1, score_player_2);
-            printf("Last user input: %c\n", user_input);
         }
     }
     return 0;
@@ -103,18 +100,18 @@ int render_map(int x_ball, int y_ball, int y_player_1, int y_player_2) {
 
 int x_move_ball(int x_ball, int direction) {
     if (direction > 0) {
-        x_ball += 1;  // направо
+        x_ball += 1;
     } else if (direction < 0) {
-        x_ball -= 1;  // налево
+        x_ball -= 1;
     }
     return x_ball;
 }
 
 int y_move_ball(int y_ball, int direction) {
     if (direction > 0) {
-        y_ball += 1;  // направо
+        y_ball += 1;
     } else if (direction < 0) {
-        y_ball -= 1;  // налево
+        y_ball -= 1;
     }
     return y_ball;
 }
