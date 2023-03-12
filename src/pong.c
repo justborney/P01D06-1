@@ -64,6 +64,7 @@ int main() {
             }
             render_map(x_ball, y_ball, y_player_1, y_player_2);
             printf("First player %d  ---  Second player %d\n", score_player_1, score_player_2);
+            while(getchar() != '\n') ;
         }
     }
     return 0;
